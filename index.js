@@ -1,5 +1,8 @@
 const express = require('express');
 const connection = require('./db');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 
 const port = 5000;
 const app = express();
@@ -43,4 +46,23 @@ app.listen(port, (err) => {
     throw new Error('Something went wrong');
   }
   console.log('all working well');
+});
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'file-storage');
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()} - ${file.originalname}`);
+  },
+});
+
+app.post('/uploaddufichier', (req, res) => {
+  upload(req, res, (err) => {
+    if (err instanceof multer.MulterError) {
+      return res.status(500).json(err);
+    } else if (err) {
+      return res.status(500).json(err);
+    }
+  });
 });

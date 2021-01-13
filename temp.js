@@ -9,19 +9,19 @@ const storage = multer.diskStorage({
     cb(null, `${Date.now()} - ${file.originalname}`);
   },
 });
-const fileFilter = (req, file, cb) => {
-  const fileTypes = /jpeg|jpg|png|webp/;
-  const mimetype = fileTypes.test(file.mimetype);
-  const extname = fileTypes.test(
-    path.extname(file.originalname).toLocaleLowerCase()
-  );
-  if (mimetype && extname) {
-    return cb(null, true);
-  }
-  const err = `Error: file upload only support the following filetypes: ${fileTypes}`;
-  console.error(err);
-  cb(err);
-  return null;
-};
-const uploadFile = multer({ storage, fileFilter }).single('picture');
-module.exports = uploadFile;
+// const fileFilter = (req, file, cb) => {
+//   const fileTypes = /jpeg|jpg|png|webp/;
+//   const mimetype = fileTypes.test(file.mimetype);
+//   const extname = fileTypes.test(
+//     path.extname(file.originalname).toLocaleLowerCase()
+//   );
+//   if (mimetype && extname) {
+//     return cb(null, true);
+//   }
+//   const err = `Error: file upload only support the following filetypes: ${fileTypes}`;
+//   console.error(err);
+//   cb(err);
+//   return null;
+// };
+// const uploadFile = multer({ storage, fileFilter }).single('picture');
+// module.exports = uploadFile;
