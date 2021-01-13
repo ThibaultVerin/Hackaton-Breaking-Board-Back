@@ -30,6 +30,14 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+app.get('/', (req, res) => {
+  res.send('test');
+});
+
+app.get('/posts', (req, res) => {
+  res.send('post');
+});
+
 app.listen(port, (err) => {
   if (err) {
     throw new Error('Something went wrong');
