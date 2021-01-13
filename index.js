@@ -1,9 +1,13 @@
 const express = require('express');
-const connection = require('./db');
+const http = require('http');
+
+const socket = require('socket.io');
 
 const port = 5000;
 const app = express();
 const cors = require('cors');
+const server = http.createServer(app);
+const io = socket(server);
 
 app.use(express.json());
 app.use(
@@ -31,16 +35,14 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.get('/', (req, res) => {
-  res.send('test');
+  res.send();
 });
 
-app.get('/posts', (req, res) => {
-  res.send('post');
+io.on('connection', (socket) => {
+  socket.emit('your id', socket.id);
+  socket.on('send message', (body) => {
+    io.emit('message', body);
+  });
 });
 
-app.listen(port, (err) => {
-  if (err) {
-    throw new Error('Something went wrong');
-  }
-  console.log('all working well');
-});
+server.listen(port, () => console.log('server is running on port 5000'));
