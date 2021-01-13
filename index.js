@@ -42,9 +42,10 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', (socket) => {
-  socket.emit('your id', socket.id);
-  socket.on('send message', (body) => {
-    io.emit('message', body);
+  console.log(socket.id);
+  socket.emit('userId', socket.id);
+  socket.on('sendCurrentUser', (body) => {
+    socket.broadcast.emit('sendNewUser', body);
   });
 });
 
