@@ -14,6 +14,7 @@ app.use(
     extended: true,
   })
 );
+app.use(express.static('file-storage'));
 
 const allowedOrigins = [
   'http://localhost:3000',
@@ -53,16 +54,16 @@ const storage = multer.diskStorage({
     cb(null, 'file-storage');
   },
   filename: (req, file, cb) => {
-    cb(null, `${Date.now()} - ${file.originalname}`);
+    cb(null, `${file.originalname}`);
   },
 });
+const upload = multer({ storage: storage });
 
-app.post('/uploaddufichier', (req, res) => {
-  upload(req, res, (err) => {
-    if (err instanceof multer.MulterError) {
-      return res.status(500).json(err);
-    } else if (err) {
-      return res.status(500).json(err);
-    }
-  });
-});
+app.post(
+  '/uploaddufichier',
+  upload.single('main_picture'),
+  (req, res, next) => {
+    const dataToSend = { path: req.file.originalname, name: req.body.title };
+    res.send(dataToSend);
+  }
+);
