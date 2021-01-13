@@ -1,15 +1,16 @@
 const express = require('express');
-const http = require('http');
+const app = express();
+const http = require('http').createServer(app);
+const port = 5000;
+const io = require('socket.io')(http, {
+  cors: {
+    origin: 'http://localhost:3000',
+  },
+});
 
-const socket = require('socket.io');
 const multer = require('multer');
 const path = require('path');
-
-const port = 5000;
-const app = express();
 const cors = require('cors');
-const server = http.createServer(app);
-const io = socket(server);
 
 app.use(express.json());
 app.use(
@@ -49,7 +50,7 @@ io.on('connection', (socket) => {
   });
 });
 
-server.listen(port, () => console.log('server is running on port 5000'));
+http.listen(port, () => console.log('server is running on port 5000'));
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
