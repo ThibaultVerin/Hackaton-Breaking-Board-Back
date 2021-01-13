@@ -2,6 +2,8 @@ const express = require('express');
 const http = require('http');
 
 const socket = require('socket.io');
+const multer = require('multer');
+const path = require('path');
 
 const port = 5000;
 const app = express();
@@ -15,6 +17,7 @@ app.use(
     extended: true,
   })
 );
+app.use(express.static('file-storage'));
 
 const allowedOrigins = [
   'http://localhost:3000',
@@ -46,3 +49,22 @@ io.on('connection', (socket) => {
 });
 
 server.listen(port, () => console.log('server is running on port 5000'));
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'file-storage');
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${file.originalname}`);
+  },
+});
+const upload = multer({ storage: storage });
+
+app.post(
+  '/uploaddufichier',
+  upload.single('main_picture'),
+  (req, res, next) => {
+    const dataToSend = { path: req.file.originalname, name: req.body.title };
+    res.send(dataToSend);
+  }
+);
