@@ -46,11 +46,14 @@ io.on('connection', (socket) => {
   console.log(socket.id);
   socket.emit('userId', socket.id);
   socket.on('sendCurrentUser', (body) => {
-    console.log(body);
     socket.broadcast.emit('sendNewUser', body);
   });
   socket.on('clientSendFirstUser', (data) => {
     socket.broadcast.emit('serverSendFirstUser', data);
+  });
+
+  socket.on('currentUserMove', (data) => {
+    io.emit('otherUserMove', data);
   });
 });
 
