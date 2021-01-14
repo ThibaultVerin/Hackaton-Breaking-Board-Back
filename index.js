@@ -54,7 +54,7 @@ io.on('connection', (socket) => {
 
   socket.on('currentUserMove', (data) => {
     console.log(data);
-    socket.broadcast.emit('otherUserMove', data);
+    io.emit('otherUserMove', data);
   });
 });
 
