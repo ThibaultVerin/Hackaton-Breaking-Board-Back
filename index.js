@@ -43,7 +43,6 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', (socket) => {
-  console.log(socket.id);
   socket.emit('userId', socket.id);
   socket.on('sendCurrentUser', (body) => {
     socket.broadcast.emit('sendNewUser', body);
@@ -57,7 +56,6 @@ io.on('connection', (socket) => {
   });
 
   socket.on('send message', (body) => {
-    console.log(body);
     io.emit('message', body);
   });
 });
@@ -82,5 +80,3 @@ app.post(
     res.send(dataToSend);
   }
 );
-
-// CoffeChat
