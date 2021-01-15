@@ -55,6 +55,11 @@ io.on('connection', (socket) => {
   socket.on('currentUserMove', (data) => {
     io.emit('otherUserMove', data);
   });
+
+  socket.on('send message', (body) => {
+    console.log(body);
+    io.emit('message', body);
+  });
 });
 
 http.listen(port, () => console.log('server is running on port 5000'));
@@ -77,3 +82,5 @@ app.post(
     res.send(dataToSend);
   }
 );
+
+// CoffeChat
