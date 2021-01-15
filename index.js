@@ -57,27 +57,28 @@ io.on('connection', (socket) => {
 
   socket.on('send message', (body) => {
     io.emit('message', body);
-    socket.on('joinShifoumi', (room) => {
-      socket.join(room);
-      io.to('room1').emit('welcome', 'you join the room');
-    });
+  });
 
-    socket.on('userJoin', (user) => {
-      socket.to('room1').broadcast.emit('player2', user);
-    });
+  socket.on('joinShifoumi', (room) => {
+    socket.join(room);
+    io.to('room1').emit('welcome', 'you join the room');
+  });
 
-    socket.on('player1Choice', (choice) => {
-      console.log(choice);
-      socket.to('room1').broadcast.emit('player2Choice', choice);
-    });
+  socket.on('userJoin', (user) => {
+    socket.to('room1').broadcast.emit('player2', user);
+  });
 
-    socket.on('player1Score', (score) => {
-      socket.to('room1').broadcast.emit('player2Score', score);
-    });
+  socket.on('player1Choice', (choice) => {
+    console.log(choice);
+    socket.to('room1').broadcast.emit('player2Choice', choice);
+  });
 
-    socket.on('notification', (message) => {
-      io.emit('send-notification', message);
-    });
+  socket.on('player1Score', (score) => {
+    socket.to('room1').broadcast.emit('player2Score', score);
+  });
+
+  socket.on('notification', (message) => {
+    io.emit('send-notification', message);
   });
 });
 
