@@ -73,6 +73,10 @@ io.on('connection', (socket) => {
   socket.on('player1Score', (score) => {
     socket.to('room1').broadcast.emit('player2Score', score);
   });
+
+  socket.on('notification', (message) => {
+    io.emit('send-notification', message);
+  });
 });
 
 http.listen(port, () => console.log('server is running on port 5000'));
