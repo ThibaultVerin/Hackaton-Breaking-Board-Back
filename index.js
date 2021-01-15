@@ -55,6 +55,24 @@ io.on('connection', (socket) => {
   socket.on('currentUserMove', (data) => {
     io.emit('otherUserMove', data);
   });
+
+  socket.on('joinShifoumi', (room) => {
+    socket.join(room);
+    io.to('room1').emit('welcome', 'you join the room');
+  });
+
+  socket.on('userJoin', (user) => {
+    socket.to('room1').broadcast.emit('player2', user);
+  });
+
+  socket.on('player1Choice', (choice) => {
+    console.log(choice);
+    socket.to('room1').broadcast.emit('player2Choice', choice);
+  });
+
+  socket.on('player1Score', (score) => {
+    socket.to('room1').broadcast.emit('player2Score', score);
+  });
 });
 
 http.listen(port, () => console.log('server is running on port 5000'));
